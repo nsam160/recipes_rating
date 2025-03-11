@@ -28,7 +28,7 @@ The first dataset, `recipes`, has 10 columns and 83782 rows for 83782 recipes. T
 
 The first few rows of `recipes` is as shown below:
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **nutrition** | **n_steps** | **steps** | **description** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|:--------------|------------:|:---------|:----------------|
@@ -71,7 +71,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 1) Left merge the recipes (on `id`) and interactions (on `recipe_id`) datasets together
     - Allow for each recipes to be matched with its rating
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **nutrition** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|:--------------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|
@@ -88,7 +88,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 2) In the merged dataset, fill all ratings of 0 with np.nan. 
     - Typically, ratings are from 1 to 5, where 1 is the worst recipe ever and 5 is the best recipe ever. The 0, in this case, are just use to simply replace missing values, but using 0 may make the ratings lower than it actually is, therefore it is best to turn it to np.nan.
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **nutrition** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|:--------------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|
@@ -105,7 +105,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 3) Find the average rating per recipe, `avg_rating`, and add it to the merged dataset
     - Since there are numerous rating per recipe, as a result of many people rating the same recipe, averaging the ratings will give a simple summary of the recipe's rating.
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **nutrition** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** | **avg_rating** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|:--------------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|---------------:|
@@ -141,7 +141,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 | `review` | object | object |
 | `avg_rating` | float64 | float64 |
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **nutrition** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** | **avg_rating** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|:--------------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|---------------:|
@@ -158,7 +158,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 5) Split the `nutrition` column that contains various values in the format "[calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), and carbohydrates (PDV)]" into its own separate column for each data and then drop that string column completely
     - This allows for easy access to each individual values, like calories, fat, sugar, etc., if needed.
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** | **avg_rating** | **calories (#)** | **total fat (PDV)** | **sugar (PDV)** | **sodium (PDV)** | **protein (PDV)** | **saturated fat (PDV)** | **carbohydrates (PDV)** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|---------------:|---------------:|-------------------:|----------------:|-----------------:|-----------------:|------------------------:|---------------------:|
@@ -181,7 +181,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 8) Categorized and add a column `cooking_speed` that contains whether the cooking time is 'slow' (longer than 35 minutes) or 'fast' (35 minutes or shorter) relative to the rest of the other recipes.
     - Allow for a way to compare between each recipe's cooking length and its rating as a group without us having to looking at each individual minutes separately creating 587 separate comparison of ratings (587 unique 'minutes' values). The '35' minute mark was calculated using the median distribution of cooking time to ensure it is not affected by outliers. After that, I categorized it into 'fast' and 'slow' based on if it is in the first 50 percentile of the 'minutes' data or the last 50 percentile.
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** | **avg_rating** | **calories (#)** | **total fat (PDV)** | **sugar (PDV)** | **sodium (PDV)** | **protein (PDV)** | **saturated fat (PDV)** | **carbohydrates (PDV)** | **cooking_speed** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|---------------:|---------------:|-------------------:|----------------:|-----------------:|-----------------:|------------------------:|---------------------:|-----------------:|
@@ -225,7 +225,7 @@ After cleaning, the dataframe ended up with 234429 rows and 23 columns, with the
 
 Below is a small display of the first 5 rows to show what the cleaned dataframe contains:
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **n_steps** | **steps** | **description** | **user_id** | **recipe_id** | **date** | **rating** | **review** | **avg_rating** | **calories (#)** | **total fat (PDV)** | **sugar (PDV)** | **sodium (PDV)** | **protein (PDV)** | **saturated fat (PDV)** | **carbohydrates (PDV)** | **cooking_speed** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|------------:|:---------|:----------------|------------:|--------------:|:--------|-----------:|:-----------|---------------:|---------------:|-------------------:|----------------:|-----------------:|-----------------:|------------------------:|---------------------:|-----------------:|
@@ -290,7 +290,7 @@ Zooming in closer:
 
 In this section, the relationship between cooking time (in minutes) and the rating is investigated. From the table and the line plot, it seems that the longer the recipe takes, the more likely it is for the minimum rating to vary, which could mean that long recipes does not necessarily mean it is always good, nor is it always bad.
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **minutes** | **rating_count** | **rating_mean** | **rating_std** | **rating_min** | **rating_25%** |  **rating_50%** | **rating_75%** | **rating_max** |
 |------------:|-----------------:|----------------:|--------------:|---------------:|---------------:|---------------:|---------------:|---------------:|
@@ -313,7 +313,7 @@ In this section, the relationship between cooking time (in minutes) and the rati
 
 Zooming in closer to see a clear pattern:
 
-<div style="overflow-x: scroll;">
+<div style="overflow-x: auto; width: 100%;">
 
 | **minutes** | **rating_count** | **rating_mean** | **rating_std** | **rating_min** | **rating_25%** |  **rating_50%** | **rating_75%** | **rating_max** |
 |------------:|-----------------:|----------------:|--------------:|---------------:|---------------:|---------------:|---------------:|---------------:|
