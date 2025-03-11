@@ -25,10 +25,10 @@ The first dataset, `recipes`, has 10 columns and 83782 rows for 83782 recipes. T
 | `steps` | Text for recipe steps, in order |
 | `description` | User-provided description |
 
+: {.responsive}
+
 
 The first few rows of `recipes` is as shown below:
-
-<div style="overflow-x: auto; width: 100%;">
 
 | **name** | **id** | **minutes** | **contributor_id** | **submitted** | **tags** | **nutrition** | **n_steps** | **steps** | **description** |
 |:---------|-------:|------------:|-------------------:|:-------------|:---------|:--------------|------------:|:---------|:----------------|
@@ -37,8 +37,6 @@ The first few rows of `recipes` is as shown below:
 | 412 broccoli casserole | 306168 | 40 | 50969 | 2008-05-30 | ['60-minutes-or-less', 'time-to-make', 'course',...] | [194.8, 20.0, 6.0, 32.0, 22.0, 36.0, 3.0] | 6 | ['preheat oven to 350 degrees', 'spray a 2...] | since there are already 411 recipes for broccoli casserole posted... |
 | millionaire pound cake | 286009 | 120 | 461724 | 2008-02-12 | ['time-to-make', 'course', 'cuisine', 'preparation',...] | [878.3, 63.0, 326.0, 13.0, 20.0, 123.0, 39.0] | 7 | ['freheat the oven to 300 degrees', 'grease a 10-inch tube pan with butter...] | why a millionaire pound cake?  because it's super rich!... |
 | 2000 meatloaf | 475785 | 90 | 2202916 | 2012-03-06  | ['time-to-make', 'course', 'main-ingredient', 'preparation',...] | [267.0, 30.0, 12.0, 12.0, 29.0, 48.0, 2.0] | 17 | ['pan fry bacon , and set aside on a paper towel to absorb...] | ready, set, cook! special edition contest entry: a mediterranean ... |
-
-</div>
 
 The second dataset, `interactions`, has 5 columns and 731927 rows for 731927 ratings total on that website. The information in each column in that dataframe table is as followed:
 
