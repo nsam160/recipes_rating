@@ -65,6 +65,7 @@ By exploring this question and project, I will be able to see what kind of recip
 The steps taken to clean our dataset before analyzing it are as followed:
 
 1) Left merge the recipes (on `id`) and interactions (on `recipe_id`) datasets together
+    
     - Allow for each recipes to be matched with its rating
 
 | **name**                                   | **id** | **minutes** | **contributor_id** | **submitted** | **tags**                          | **nutrition**                                | **n_steps** | **steps**                    | **description**             | **user_id** | **recipe_id** | **date**   | **rating** | **review**                                 |
@@ -78,6 +79,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 | cookies by design sugar shortbread cookies | 298509 | 20          | 506822             | 2008-04-15    | ['30-minutes-or-less', 'time,...] | [174.9, 14.0, 33.0, 4.0, 4.0, 11.0, 6.0]     | 5           | ['whip sugar and shorten...] | i've heard of the 'cooki... | 1.80329e+09 | 298509.0      | 2014-11-01 | 0          | I work at a Cookies By Design and can sa...|
 
 2) In the merged dataset, fill all ratings of 0 with np.nan. 
+    
     - Typically, ratings are from 1 to 5, where 1 is the worst recipe ever and 5 is the best recipe ever. The 0, in this case, are just use to simply replace missing values, but using 0 may make the ratings lower than it actually is, therefore it is best to turn it to np.nan.
 
 | **name**                                   | **id** | **minutes** | **contributor_id** | **submitted** | **tags**                          | **nutrition**                                | **n_steps** | **steps**                    | **description**             | **user_id** | **recipe_id** | **date**   | **rating** | **review**                                 |
@@ -91,6 +93,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 | cookies by design sugar shortbread cookies | 298509 | 20          | 506822             | 2008-04-15    | ['30-minutes-or-less', 'time-...] | [174.9, 14.0, 33.0, 4.0, 4.0, 11.0, 6.0]     | 5           | ['whip sugar and shorten...] | i've heard of the 'cooki... | 1.80329e+09 | 298509.0      | 2014-11-01 | NaN        | I work at a Cookies By Design and can sa...|
 
 3) Find the average rating per recipe, `avg_rating`, and add it to the merged dataset
+    
     - Since there are numerous rating per recipe, as a result of many people rating the same recipe, averaging the ratings will give a simple summary of the recipe's rating.
 
 | **name**                                   | **id** | **minutes** | **contributor_id** | **submitted** | **tags**                          | **nutrition**                                | **n_steps** | **steps**                   | **description**             | **user_id** | **recipe_id** | **date**   | **rating** | **review**                          | **avg_rating** |
@@ -104,6 +107,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 | cookies by design sugar shortbread cookies | 298509 | 20          | 506822             | 2008-04-15    | ['30-minutes-or-less', 'time-...] | [174.9, 14.0, 33.0, 4.0, 4.0, 11.0, 6.0]     | 5           | ['whip sugar and shorte...] | i've heard of the 'cooki... | 1.80329e+09 | 298509.0      | 2014-11-01 | NaN        | I work at a Cookies By Design an... | 3.0            |
 
 4) Turn any string orientation of date-like objects, such as `submitted` and `date`, into pd.datetime
+    
     - This allows for trend-like analysis if needed
 
 | **Column**       | **Dtype Before** |  **Dtype After** |
@@ -136,6 +140,7 @@ The steps taken to clean our dataset before analyzing it are as followed:
 | cookies by design sugar shortbread cookies | 298509 | 20          | 506822             | 2008-04-15 00:00:00 | ['30-minutes-or-less', 'time-...] | [174.9, 14.0, 33.0, 4.0, 4.0, 11.0, 6.0]     | 5           | ['whip sugar and shorte...] | i've heard of the 'cooki... | 1.80329e+09 | 298509.0      | 2014-11-01 00:00:00 | NaN        | I work at a Cookies By Design an... | 3.0            |
 
 5) Split the `nutrition` column that contains various values in the format "[calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), and carbohydrates (PDV)]" into its own separate column for each data and then drop that string column completely
+    
     - This allows for easy access to each individual values, like calories, fat, sugar, etc., if needed.
 
 | **name**                                   | **id** | **minutes** | **contributor_id** | **submitted**       | **tags**                          | **n_steps** | **steps**                   | **description**             | **user_id** | **recipe_id** | **date**            | **rating** | **review**                          | **avg_rating** | **calories (#)** | **total fat (PDV)** | **sugar (PDV)** | **sodium (PDV)** | **protein (PDV)** | **saturated fat (PDV)** | **carbohydrates (PDV)** |
@@ -149,12 +154,15 @@ The steps taken to clean our dataset before analyzing it are as followed:
 | cookies by design sugar shortbread cookies | 298509 | 20          | 506822             | 2008-04-15 00:00:00 | ['30-minutes-or-less', 'time-...] | 5           | ['whip sugar and shorte...] | i've heard of the 'cooki... | 1.80329e+09 | 298509.0      | 2014-11-01 00:00:00 | NaN        | I work at a Cookies By Design an... | 3.0            | 174.9            | 14.0                | 33.0            | 4.0              | 4.0               | 11.0                    | 6.0                     |
 
 6) Turn the `steps` column, which is in string format, into list of separate steps
+    
     - Allows for easy access to individual steps required in a recipe if needed without having to split the string everytime it is used
 
 7) Turn the `tags` column, which is in string format, into list of separate tags
+    
     - Allows for easy access to individual tags in case I need to find recipe of a certain tags
 
 8) Categorized and add a column `cooking_speed` that contains whether the cooking time is 'slow' (longer than 35 minutes) or 'fast' (35 minutes or shorter) relative to the rest of the other recipes.
+    
     - Allow for a way to compare between each recipe's cooking length and its rating as a group without us having to looking at each individual minutes separately creating 587 separate comparison of ratings (587 unique 'minutes' values). The '35' minute mark was calculated using the median distribution of cooking time to ensure it is not affected by outliers. After that, I categorized it into 'fast' and 'slow' based on if it is in the first 50 percentile of the 'minutes' data or the last 50 percentile.
 
 | **name**                                   | **id** | **minutes** | **contributor_id** | **submitted**       | **tags**                          | **n_steps** | **steps**                   | **description**             | **user_id** | **recipe_id** | **date**            | **rating** | **review**                          | **avg_rating** | **calories (#)** | **total fat (PDV)** | **sugar (PDV)** | **sodium (PDV)** | **protein (PDV)** | **saturated fat (PDV)** | **carbohydrates (PDV)** | **cooking_speed** |
@@ -210,7 +218,7 @@ Below is a small display of the first 5 rows to show what the cleaned dataframe 
 In this analysis, the distribution of the ratings for all recipes were examined. The plot below shows a distribution that is skewed left, meaning that most people rate the recipe they use very highly.
 
 <iframe
-  src="graphs/rating_dist.html"
+  src="assets/rating_dist.html"
   width="800"
   height="600"
   frameborder="0"
@@ -219,7 +227,7 @@ In this analysis, the distribution of the ratings for all recipes were examined.
 In addition to analyzing the distribution of the recipe's rating, I also analyze the distribution of the amount of time, in minutes, to cook the recipe. 
 
 <iframe
-  src="graphs/unzoomed_minute_dist.html"
+  src="assets/unzoomed_minute_dist.html"
   width="800"
   height="600"
   frameborder="0"
@@ -228,7 +236,7 @@ In addition to analyzing the distribution of the recipe's rating, I also analyze
 Since the `minutes` column has a huge range due to the inclusion of outliers, it will cause any plots generated with `minutes` to be super thin and hard to see clear data, therefore any plots generated here involving `minutes` will include another plot where the range is only within the valid bounds, [Q1 - 1.5(IQR), Q3 + 1.5(IQR)]. As the distrbution never goes below 0, the outlier will never reach the lower bound, so we instead plot the graph within the bound, [0, Q3 + 1.5(IQR)]. The plot seems to reveal a distribution that is skewed right, meaning most of the recipe has a cooking time on the lower end, which is less than 1 hour (60 minutes). The decreasing trend in the histogram indicates that as the cooking time gets longer, there are less of those recipes displayed on [food.com](https://www.food.com/).
 
 <iframe
-  src="graphs/minute_dist.html"
+  src="assets/minute_dist.html"
   width="800"
   height="600"
   frameborder="0"
@@ -239,7 +247,7 @@ Since the `minutes` column has a huge range due to the inclusion of outliers, it
 In this bivariate analysis of two variables, the average rating of the recipe and the time it took to cook the food was examined with a scatterplot. It was noticed that the graph gives off a logarithm shape mainly due to the fact that most of the data is clustered around a high average rating and a low cooking time. It also seems that as the cooking time gets higher, there appears to be less ratings along with less lower average ratings. This could be interpreted as the higher the cooking time, the less likely people are going to be using that recipes, thus less ratings in general for those recipes. With less ratings, the people who does use that recipe will probably like it a lot, which was why they used it in the first place, making recipes with higher cooking time appear to be more well-liked. 
 
 <iframe
-  src="graphs/unzoomed_time_rating_scat.html"
+  src="assets/unzoomed_time_rating_scat.html"
   width="800"
   height="600"
   frameborder="0"
@@ -248,7 +256,7 @@ In this bivariate analysis of two variables, the average rating of the recipe an
 Zooming in closer:
 
 <iframe
-  src="graphs/time_rating_scat.html"
+  src="assets/time_rating_scat.html"
   width="800"
   height="600"
   frameborder="0"
@@ -270,7 +278,7 @@ In this section, the relationship between cooking time (in minutes) and the rati
 | 1051200     | 2.0              | 5.00            | 0.00           | 5.0            | 5.0            | 5.0             | 5.0            | 5.0            |
 
 <iframe
-  src="graphs/unzoomed_time_star_describe.html"
+  src="assets/unzoomed_time_star_describe.html"
   width="800"
   height="600"
   frameborder="0"
@@ -289,7 +297,7 @@ Zooming in closer to see a clear pattern:
 | 120         | 1145.0           | 4.66            | 0.78           | 1.0            | 5.0            | 5.0             | 5.0            | 5.0            |
 
 <iframe
-  src="graphs/time_star_describe.html"
+  src="assets/time_star_describe.html"
   width="800"
   height="600"
   frameborder="0"
@@ -340,7 +348,7 @@ It is believed that the `review` column in the dataset is Not Missing At Random 
 **Significance Level:** p = 0.05
 
 <iframe
-  src="graphs/unzoomed_missing_time.html"
+  src="assets/unzoomed_missing_time.html"
   width="800"
   height="600"
   frameborder="0"
@@ -349,7 +357,7 @@ It is believed that the `review` column in the dataset is Not Missing At Random 
 Due to the outliers, I shall zoom into where the main part of the data is to see the two distributions more clearly.
 
 <iframe
-  src="graphs/missing_time.html"
+  src="assets/missing_time.html"
   width="800"
   height="600"
   frameborder="0"
@@ -360,7 +368,7 @@ Noticing how the mean in cooking time differs greatly between whether or not rat
 **Test Statistic:** Absolute difference in group mean of cooking time (in minutes) between missing rating and non-missing rating
 
 <iframe
-  src="graphs/empirical_dist_minutes.html"
+  src="assets/empirical_dist_minutes.html"
   width="800"
   height="600"
   frameborder="0"
@@ -377,7 +385,7 @@ Since the p-value is 0.096, which is greater than the significance level of 0.05
 **Significance Level:** p = 0.05
 
 <iframe
-  src="graphs/unzoomed_missing_calories_time.html"
+  src="assets/unzoomed_missing_calories_time.html"
   width="800"
   height="600"
   frameborder="0"
@@ -386,7 +394,7 @@ Since the p-value is 0.096, which is greater than the significance level of 0.05
 Due to the large range of data involving calories, I shall zoom into the first 5000 calories, where most of the datas are.
 
 <iframe
-  src="graphs/missing_calories_time.html"
+  src="assets/missing_calories_time.html"
   width="800"
   height="600"
   frameborder="0"
@@ -397,7 +405,7 @@ Although the means in the data distribution does not look significantly differen
 **Test Statistic:** Absolute difference in mean of calories between the two group
 
 <iframe
-  src="graphs/empirical_dist_calories_missing.html"
+  src="assets/empirical_dist_calories_missing.html"
   width="800"
   height="600"
   frameborder="0"
@@ -422,7 +430,7 @@ Since we are looking at the differences between two sample distribution without 
 The reason why this specific test statistic, difference in mean, was chosen is due to the fact that the test is a one sided, directional test to see if shorter recipes have high ratings. Furthermore, the mean rating was specifically chosen instead of the mean average ratings because the average ratings would not be able to capture all the nuance of individual ratings that are lower than average or higher than average.
 
 <iframe
-  src="graphs/empirical_dist_rating.html"
+  src="assets/empirical_dist_rating.html"
   width="800"
   height="600"
   frameborder="0"
@@ -442,7 +450,7 @@ The accuracy metric for this model is approximately 0.87, which is pretty good b
 
 Here is our baseline prediction confusion matrix:
 
-<img src='graphs/base_confusion_matrix.png' alt='Base Prediction Confusion Matrix'>
+<img src='assets/base_confusion_matrix.png' alt='Base Prediction Confusion Matrix'>
 
 ## Final Model
 
@@ -479,7 +487,7 @@ In the end, with the final best hyperparameters chosen after tuning, which are '
 
 Below is our final prediction confusion matrix:
 
-<img src='graphs/final_confusion_matrix.png' alt='Final Prediction Confusion Matrix with Improvement'>
+<img src='assets/final_confusion_matrix.png' alt='Final Prediction Confusion Matrix with Improvement'>
 
 ## Fairness Analysis
 
@@ -494,7 +502,7 @@ For the fairness analysis, due to the balance in the class of the classifier, I 
 **Significance Level:** 0.05
 
 <iframe
-  src="graphs/accuracy_dist.html"
+  src="assets/accuracy_dist.html"
   width="800"
   height="600"
   frameborder="0"
